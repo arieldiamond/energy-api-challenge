@@ -1,7 +1,24 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+require 'csv'
+require 'json'
+
+def make_object(file_name)
+  object = []
+  CSV.foreach(file_name, headers: true, header_converters: :symbol) do |row|
+     object << row.to_hash
+  end
+  object
+end
+
+users = make_object('lib/data/users.csv')
+bills = make_object('lib/data/bills.csv')
+accounts = make_object('lib/data/accounts.csv')
+
+User.create(users)
+
+accounts.each do |account|
+	# "type" is a reserved term so I had to rename it here.
+	account[:account_type] = account.delete(:type)
+	Account.create(account)
+end
+
+Bill.create(bills)
