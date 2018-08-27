@@ -10,8 +10,8 @@ def make_object(file_name)
 end
 
 users = make_object('lib/data/users.csv')
-bills = make_object('lib/data/bills.csv')
 accounts = make_object('lib/data/accounts.csv')
+bills = make_object('lib/data/bills.csv')
 
 User.create(users)
 
